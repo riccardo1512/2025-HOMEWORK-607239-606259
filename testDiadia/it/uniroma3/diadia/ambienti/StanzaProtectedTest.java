@@ -1,16 +1,15 @@
-package it.uniroma3.diadia;
+package it.uniroma3.diadia.ambienti;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-class StanzaTest {
+class StanzaProtectedTest {
 
-	private Stanza stanza;
+	private StanzaProtected stanza;
 	private Stanza stanzaAdiacente;
 	private Attrezzo spada;
 	private Attrezzo scudo;
@@ -18,7 +17,7 @@ class StanzaTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		
-		this.stanza = new Stanza("n11");
+		this.stanza = new StanzaProtected("n11");
         this.stanzaAdiacente = new Stanza("n12");
         this.spada = new Attrezzo("spada", 3);
         this.scudo = new Attrezzo("scudo", 5);

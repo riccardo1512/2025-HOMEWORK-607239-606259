@@ -21,6 +21,8 @@ public class Partita {
 		
 	private Giocatore giocatore;
 	
+	private IO console;
+	
 	public Partita(){
 		this.labirinto = new Labirinto();
 		this.stanzaCorrente = this.labirinto.getStanzaIniziale();
@@ -51,7 +53,7 @@ public class Partita {
 	 * @return vero se partita finita
 	 */
 	public boolean isFinita() {
-		return this.finita || vinta() || (giocatore.getCfu() == 0);
+		return this.finita || this.vinta() || (this.giocatore.getCfu() <= 0);
 	}
 
 	/**
@@ -80,6 +82,16 @@ public class Partita {
 
 	public String toString() {
 		return this.getStanzaCorrente() + "\nCfu =  "+ this.giocatore.getCfu();
+	}
+
+	public void setConsole(IO c) {
+		
+		this.console = c;
+	}
+	
+	public IO getConsole() {
+		
+		return this.console;
 	}
 
 }

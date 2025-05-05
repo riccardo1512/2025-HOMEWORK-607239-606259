@@ -1,8 +1,9 @@
 package it.uniroma3.diadia;
 
 
-import it.uniroma3.diadia.ambienti.Stanza;
-import it.uniroma3.diadia.attrezzi.Attrezzo;
+import it.uniroma3.diadia.comandi.Comando;
+import it.uniroma3.diadia.comandi.FabbricaDiComandi;
+import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
 
 /**
  * Classe principale di diadia, un semplice gioco di ruolo ambientato al dia.
@@ -28,14 +29,14 @@ public class DiaDia {
 			"o regalarli se pensi che possano ingraziarti qualcuno.\n\n"+
 			"Per conoscere le istruzioni usa il comando 'aiuto'.";
 	
-	static final private String[] elencoComandi = {"vai", "aiuto", "prendi", "posa", "fine"};
 
 	private Partita partita;
-	private IOConsole console;
+	private IO console;
 
-	public DiaDia(IOConsole c) {
+	public DiaDia(IO c) {
 		this.partita = new Partita();
 		this.console = c;
+		this.partita.setConsole(c);
 	}
 
 	public void gioca() {
@@ -56,137 +57,42 @@ public class DiaDia {
 	 * @return true se l'istruzione e' eseguita e il gioco continua, false altrimenti
 	 */
 	private boolean processaIstruzione(String istruzione) {
-		Comando comandoDaEseguire = new Comando(istruzione);
 		
-		if(comandoDaEseguire.getNome() == null)
-			return false;
-
-		if (comandoDaEseguire.getNome().equals("fine")) {
-			this.fine(); 
-			return true;
-		} else if (comandoDaEseguire.getNome().equals("vai"))
-			this.vai(comandoDaEseguire.getParametro());
-		else if (comandoDaEseguire.getNome().equals("aiuto"))
-			this.aiuto();
-			
-		/* comandi aggiunti */
-		else if(comandoDaEseguire.getNome().equals("prendi"))
-			this.prendi(comandoDaEseguire.getParametro());
-		else if(comandoDaEseguire.getNome().equals("posa"))
-			this.posa(comandoDaEseguire.getParametro());
-		else
-			this.console.mostraMessaggio("Comando sconosciuto");
+		Comando comandoDaEseguire;
+		FabbricaDiComandi factory = new FabbricaDiComandiFisarmonica();
+		comandoDaEseguire = factory.costruisciComando(istruzione);
+		comandoDaEseguire.esegui(this.partita);
 		
 		
-		
+		/* partita finita */
 		if(this.partita.isFinita()) {
 			this.console.mostraMessaggio("La partita è finita!");
 			
+			/* partita vinta */
 			if (this.partita.vinta()) {
+				
 				this.console.mostraMessaggio("Hai vinto!");
-				return true;
-			} else
+			} else {
+				/*partita persa */
+				
+				
+				if(this.partita.getGiocatore().getCfu() == 0)
+					this.console.mostraMessaggio("Hai esaurito i CFU");
+				
 				this.console.mostraMessaggio("Hai perso!!! :(");
+				
+				
+			}
+			return true;
 		}
 		
 		return false;
-	}   
-
-	// implementazioni dei comandi dell'utente:
-
-	/**
-	 * Stampa informazioni di aiuto.
-	 */
-	private void aiuto() {
-		
-		String messaggio = "";
-		
-		for(int i=0; i< elencoComandi.length; i++) {
-			
-			messaggio = messaggio + elencoComandi[i] + " ";
-		}
-		this.console.mostraMessaggio(messaggio);
 	}
 
-	/**
-	 * Cerca di andare in una direzione. Se c'e' una stanza ci entra 
-	 * e ne stampa il nome, altrimenti stampa un messaggio di errore
-	 */
-	private void vai(String direzione) {
-		
-		if (direzione == null) {
-			
-			this.console.mostraMessaggio("Dove vuoi andare ?");
-			direzione = this.console.leggiRiga();
-		} 
-		
-		
-		Stanza prossimaStanza = null;
-		prossimaStanza = this.partita.getStanzaCorrente().getStanzaAdiacente(direzione);
-		if (prossimaStanza == null)
-			this.console.mostraMessaggio("Direzione inesistente");
-		else {
-			this.partita.setStanzaCorrente(prossimaStanza);
-			int cfu = this.partita.getGiocatore().getCfu();
-			this.partita.getGiocatore().setCfu(cfu - 1);
-		}
-		this.console.mostraMessaggio(this.partita.toString());
-	}
-	
-	private void prendi(String nomeAttrezzo) {
-		
-		if (nomeAttrezzo == null) {
-			
-			this.console.mostraMessaggio("Che attrezzo dalla stanza vuoi prendere ?");
-			nomeAttrezzo = this.console.leggiRiga();
-		} 
-			
-	
-		Attrezzo a = this.partita.getStanzaCorrente().getAttrezzo(nomeAttrezzo);
-		if(a == null) {
-				
-			this.console.mostraMessaggio("L'attrezzo che vuoi prendere non è presente nella stanza");
-			return;
-		}
-			
-		this.partita.getGiocatore().prendi(a);
-		this.partita.getStanzaCorrente().removeAttrezzo(a);
-		
-		this.console.mostraMessaggio("Hai preso l'attrezzo " + a.toString());
-	}
-	
-	private void posa(String nomeAttrezzo) {
-		
-		if (nomeAttrezzo == null) {
-
-			this.console.mostraMessaggio("Che attrezzo dalla stanza vuoi posare ?");
-			nomeAttrezzo = this.console.leggiRiga();
-		} 
-	
-		
-		Attrezzo a = this.partita.getGiocatore().getBorsa().getAttrezzo(nomeAttrezzo);
-		if(a == null) {
-
-			this.console.mostraMessaggio("L'attrezzo che vuoi prendere non è presente nella borsa");
-			return;
-		}
-
-		this.partita.getGiocatore().posa(a);
-		this.partita.getStanzaCorrente().addAttrezzo(a);
-
-		this.console.mostraMessaggio("Hai posato l'attrezzo " + a.toString());
-	}
-
-	/**
-	 * Comando "Fine".
-	 */
-	private void fine() {
-		this.console.mostraMessaggio("Grazie di aver giocato!");  // si desidera smettere
-	}
 
 	public static void main(String[] argc) {
-		IOConsole c = new IOConsole();
-		DiaDia gioco = new DiaDia(c);
+		IO io = new IOConsole();
+		DiaDia gioco = new DiaDia(io);
 		
 		gioco.gioca();
 	}
