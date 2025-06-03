@@ -1,20 +1,25 @@
 package it.uniroma3.diadia;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class IOSimulator implements IO {
 
 
 
-	private String[] righeDaLeggere;  // input simulato (da tastiera)
-	private String[] messaggiStampati; // output simulato (a video)
+	private List<String> righeDaLeggere;  // input simulato (da tastiera)
+	private List<String> messaggiStampati; // output simulato (a video)
 	
 	private int indiceLettura; // per tenere traccia della lettura
 	private int indiceStampa;
 
-	public IOSimulator(String[] istruzioni) {
+	public IOSimulator(List<String> istruzioni) {
 		
 		
 		this.righeDaLeggere = istruzioni;
-		this.messaggiStampati = new String[istruzioni.length + 50];
+		
+		this.messaggiStampati = new ArrayList<String>(istruzioni.size() + 50);
 		
 		this.indiceLettura = 0;
 		this.indiceStampa = 0;
@@ -27,11 +32,11 @@ public class IOSimulator implements IO {
 
 		//System.out.println("messaggio ricevuto");
 		
-		if(this.indiceStampa < this.messaggiStampati.length) {
+		if(this.messaggiStampati != null) {
 			
 			//System.out.println("messaggio salvato");
 			
-			this.messaggiStampati[indiceStampa] = messaggio;
+			this.messaggiStampati.add(indiceStampa, messaggio);
 			this.indiceStampa++;
 		}
 		else {
@@ -44,9 +49,9 @@ public class IOSimulator implements IO {
 	@Override
 	public String leggiRiga() {
 		
-		if (indiceLettura < righeDaLeggere.length) {
+		if (indiceLettura < this.righeDaLeggere.size()) {
 			
-			String riga = righeDaLeggere[indiceLettura];
+			String riga = this.righeDaLeggere.get(indiceLettura);
 			indiceLettura++;
 			
 			System.out.print(riga + ", ");
@@ -60,9 +65,14 @@ public class IOSimulator implements IO {
 		
 		System.out.println("\n\nStampa di tutti i messaggi ricevuti:\n");
 
-		for(int i = 0; i <  this.indiceStampa; i++) {
+		/* questa volta uso l'iteratore */
+		Iterator<String> iteratore = this.messaggiStampati.iterator();
+		
+		while(iteratore.hasNext()) {
 			
-			System.out.println(this.messaggiStampati[i]);
+			String s = iteratore.next();
+			
+			System.out.println(s);
 		}
 		
 		System.out.println("\n\n\n");

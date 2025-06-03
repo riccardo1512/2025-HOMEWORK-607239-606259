@@ -7,17 +7,30 @@ public class ComandoGuarda implements Comando {
 	private String nome;
 	private String parametro;
 	
-	
 	public ComandoGuarda() {
 		
+		this(null);
+	}
+	
+	public ComandoGuarda(String parametro) {
+		
 		this.nome = "guarda";
+		this.parametro = parametro;
 	}
 	
 	
 	@Override
 	public void esegui(Partita partita) {
-
-		partita.getConsole().mostraMessaggio(partita.toString());
+		
+		if(this.parametro != null) {
+			
+			if(this.parametro.equals("borsa")) {
+				
+				partita.getConsole().mostraMessaggio("La tua borsa = " + partita.getGiocatore().getBorsa());
+			}
+		}
+		else
+			partita.getConsole().mostraMessaggio(partita.toString());
 	}
 
 	@Override

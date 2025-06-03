@@ -40,4 +40,9 @@ public class StanzaMagica extends Stanza{
 		return attrezzo;
 	}
 
+	public boolean isMagica() {
+		
+		return true;
+	}
+
 }

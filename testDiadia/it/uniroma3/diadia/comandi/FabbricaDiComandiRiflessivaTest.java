@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class FabbricaDiComandiFisarmonicaTest {
+class FabbricaDiComandiRiflessivaTest {
 
 	private FabbricaDiComandi fabbrica;
 
@@ -13,7 +13,7 @@ class FabbricaDiComandiFisarmonicaTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		
-		this.fabbrica = new FabbricaDiComandiFisarmonica();
+		this.fabbrica = new FabbricaDiComandiRiflessiva();
 	}
 
 	

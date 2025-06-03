@@ -2,6 +2,10 @@ package it.uniroma3.diadia;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +34,11 @@ class IOSimulatorTest {
 	@Test
 	void testPartitaInterrotta() {
 		
-		String[] istruzioni = {"prendi osso","vai est","fine"};
+		List<String> istruzioni = new ArrayList<String>();
+		istruzioni.add("prendi osso");
+		istruzioni.add("vai est");
+		istruzioni.add("fine");
+		
 		this.console = new IOSimulator(istruzioni);
 		
 		this.giocaStampa();
@@ -41,7 +49,9 @@ class IOSimulatorTest {
 	@Test
 	void testPartitaVinta() {
 		
-		String[] istruzioni = {"vai nord"};
+		List<String> istruzioni = new ArrayList<String>();
+		istruzioni.add("vai nord");
+		
 		this.console = new IOSimulator(istruzioni);
 		
 		this.giocaStampa();
@@ -52,7 +62,29 @@ class IOSimulatorTest {
 	@Test
 	void testPartitaPersa() {
 		
-		String[] istruzioni = {"vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est"};
+		List<String> istruzioni = new ArrayList<String>();
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+
+		
 		this.console = new IOSimulator(istruzioni);
 		
 		this.giocaStampa();
@@ -63,7 +95,31 @@ class IOSimulatorTest {
 	@Test
 	void testPartitaPersaConComandoDiTroppo() {
 		
-		String[] istruzioni = {"vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est","vai est", "fine"};
+		List<String> istruzioni = new ArrayList<>();
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("vai est");
+		istruzioni.add("fine");
+
+
+		
 		this.console = new IOSimulator(istruzioni);
 		
 		this.giocaStampa();
@@ -74,9 +130,9 @@ class IOSimulatorTest {
 	@Test
 	void testPartitaNonFinita() {
 		
+		List<String> istruzioni = new ArrayList<String>();
+		istruzioni.add("prendi osso");
 		
-			
-		String[] istruzioni = {"prendi osso"};
 		this.console = new IOSimulator(istruzioni);
 			
 		this.giocaStampa();
@@ -88,7 +144,33 @@ class IOSimulatorTest {
 	@Test
 	void testPartitaCompletaConTutteStanze() {
 		
-		String[] istruzioni = {"prendi osso", "vai sud", "prendi lanterna", "vai nord", "vai est", "vai nord", "posa osso", "prendi osso","posa osso", "prendi osso","posa osso", "prendi osso","posa osso", "prendi osso","vai nord","guarda","posa lanterna", "guarda", "vai nord", "vai nord", "posa osso", "vai nord", "guarda", "vai nord"};
+		List<String> istruzioni = new ArrayList<>();
+		istruzioni.add("prendi osso");
+		istruzioni.add("vai sud");
+		istruzioni.add("prendi lanterna");
+		istruzioni.add("vai nord");
+		istruzioni.add("vai est");
+		istruzioni.add("vai nord");
+		istruzioni.add("posa osso");
+		istruzioni.add("prendi osso");
+		istruzioni.add("posa osso");
+		istruzioni.add("prendi osso");
+		istruzioni.add("posa osso");
+		istruzioni.add("prendi osso");
+		istruzioni.add("posa osso");
+		istruzioni.add("prendi osso");
+		istruzioni.add("vai nord");
+		istruzioni.add("guarda");
+		istruzioni.add("posa lanterna");
+		istruzioni.add("guarda");
+		istruzioni.add("vai nord");
+		istruzioni.add("vai nord");
+		istruzioni.add("posa osso");
+		istruzioni.add("vai nord");
+		istruzioni.add("guarda");
+		istruzioni.add("vai nord");
+
+		
 		this.console = new IOSimulator(istruzioni);
 		
 		this.giocaStampa();

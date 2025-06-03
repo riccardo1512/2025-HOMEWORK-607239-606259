@@ -29,6 +29,14 @@ public class Partita {
 		this.finita = false;
 		this.giocatore = new Giocatore();
 	}
+	
+	public Partita(Labirinto l) {
+		
+		this.labirinto = l;
+		this.stanzaCorrente = this.labirinto.getStanzaIniziale();
+		this.finita = false;
+		this.giocatore = new Giocatore();
+	}
 
    
 	
