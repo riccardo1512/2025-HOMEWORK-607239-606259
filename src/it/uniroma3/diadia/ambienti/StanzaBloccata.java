@@ -2,13 +2,42 @@ package it.uniroma3.diadia.ambienti;
 
 public class StanzaBloccata extends Stanza {
 	
-	private String direzioneBloccata;
+	private Direzione direzioneBloccata;
 	private String attrezzoNecessario;
 
-	public StanzaBloccata(String nome, String nomeDirezioneBloccata, String nomeAttrezzoNecessario) {
+	public StanzaBloccata(String nome, Direzione direzioneBloccata, String nomeAttrezzoNecessario) {
 		super(nome);
 
-		this.direzioneBloccata = nomeDirezioneBloccata;
+		this.direzioneBloccata = direzioneBloccata;
+		this.attrezzoNecessario = nomeAttrezzoNecessario;
+	}
+	
+	public StanzaBloccata(String nome, String direzioneBloccata, String nomeAttrezzoNecessario) {
+		
+		super(nome);
+		
+		Direzione d = null;
+
+		switch(direzioneBloccata) {
+
+			case "nord":
+			d = Direzione.NORD;
+			break;
+			
+			case "est":
+			d = Direzione.EST;
+			break;
+
+			case "sud":
+			d = Direzione.SUD;
+			break;
+
+			case "ovest":
+			d = Direzione.OVEST;
+			break;
+		}
+
+		this.direzioneBloccata = d;
 		this.attrezzoNecessario = nomeAttrezzoNecessario;
 	}
 	
@@ -20,7 +49,7 @@ public class StanzaBloccata extends Stanza {
      * @param direzione
      */
 	@Override
-	public Stanza getStanzaAdiacente(String direzione) {
+	public Stanza getStanzaAdiacente(Direzione direzione) {
 		
 		if(direzione.equals(this.direzioneBloccata)) {
 			
@@ -35,6 +64,18 @@ public class StanzaBloccata extends Stanza {
 	}
 	
 	@Override
+	public Stanza getStanzaAdiacente(String direzione) {
+		
+		Direzione d = Direzione.getDirezione(direzione);
+		
+		
+		if(super.hasAttrezzo(attrezzoNecessario))
+			return super.getStanzaAdiacente(d);
+		else
+			return this;
+	}
+	
+	@Override
 	public String getDescrizione() {
         return this.toString();
     }
@@ -46,5 +87,25 @@ public class StanzaBloccata extends Stanza {
 		
 		return messaggio;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		
+		if(o == null || !(o instanceof StanzaBloccata))
+			return false;
+		
+		StanzaBloccata that = (StanzaBloccata) o;
+		
+		return this.getNome().equals(that.getNome()) && this.getAttrezzoNecessario().equals(that.getAttrezzoNecessario()) && this.getDirezioneBloccata().equals(that.getDirezioneBloccata());
+	}
+
+	public Direzione getDirezioneBloccata() {
+		return direzioneBloccata;
+	}
+
+	public String getAttrezzoNecessario() {
+		return attrezzoNecessario;
+	}
+
 
 }

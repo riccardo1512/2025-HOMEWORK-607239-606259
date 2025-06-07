@@ -1,10 +1,14 @@
 package it.uniroma3.diadia;
 
 
+import java.io.FileNotFoundException;
+
+import it.uniroma3.diadia.ambienti.CaricatoreLabirinto;
+import it.uniroma3.diadia.ambienti.FormatoFileNonValidoException;
 import it.uniroma3.diadia.ambienti.Labirinto;
 import it.uniroma3.diadia.comandi.Comando;
 import it.uniroma3.diadia.comandi.FabbricaDiComandi;
-import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
+import it.uniroma3.diadia.comandi.FabbricaDiComandiRiflessiva;
 
 /**
  * Classe principale di diadia, un semplice gioco di ruolo ambientato al dia.
@@ -34,17 +38,17 @@ public class DiaDia {
 	private Partita partita;
 	private IO console;
 
-	public DiaDia(IO c) {
+	/*
+	public DiaDia(IO c) throws FileNotFoundException, FormatoFileNonValidoException {
 		this.partita = new Partita();
 		this.console = c;
 		this.partita.setConsole(c);
 	}
+	*/
 	
 	public DiaDia(Labirinto l, IO c) {
 		
-		
-		
-		this.partita = new Partita();
+		this.partita = new Partita(l);
 		this.console = c;
 		this.partita.setConsole(c);
 	}
@@ -71,7 +75,7 @@ public class DiaDia {
 	private boolean processaIstruzione(String istruzione) {
 		
 		Comando comandoDaEseguire;
-		FabbricaDiComandi factory = new FabbricaDiComandiFisarmonica();
+		FabbricaDiComandi factory = new FabbricaDiComandiRiflessiva();
 		comandoDaEseguire = factory.costruisciComando(istruzione);
 		comandoDaEseguire.esegui(this.partita);
 		
@@ -100,20 +104,33 @@ public class DiaDia {
 		
 		return false;
 	}
+	
+	public IOConsole getIOConsole() {
+		
+		return (IOConsole) this.console;
+	}
 
 
-	public static void main(String[] argc) {
+	public static void main(String[] argc) throws FileNotFoundException, FormatoFileNonValidoException {
 		IO io = new IOConsole();
 		
+		/*
 		Labirinto labirinto = new LabirintoBuilder()
-				.addStanzaIniziale(“LabCampusOne”)
-				.addStanzaVincente(“Biblioteca”)
-				.addAdiacenza(“LabCampusOne”,“Biblioteca”,”ovest”)
+				.addStanzaIniziale("LabCampusOne")
+				.addStanzaVincente("Biblioteca")
+				.addAdiacenza("LabCampusOne","Biblioteca",Direzione.OVEST)
 				.getLabirinto();
+		*/
 		
+		String nomeFile = "resources/labirinto1.txt";
+		
+		CaricatoreLabirinto caricatore = new CaricatoreLabirinto(nomeFile);
+		Labirinto labirinto = caricatore.getLabirinto();
 		
 		DiaDia gioco = new DiaDia(labirinto, io);
 		
 		gioco.gioca();
+		
+		gioco.getIOConsole().chiudiScanner();	// chiusura di System.in
 	}
 }

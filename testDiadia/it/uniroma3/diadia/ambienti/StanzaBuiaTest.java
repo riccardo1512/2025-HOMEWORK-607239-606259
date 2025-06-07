@@ -113,21 +113,21 @@ class StanzaBuiaTest {
 	
     @Test
     void testGetStanzaAdiacenteDirezioneNonEsistente() {
-        assertNull(this.stanzaBuia.getStanzaAdiacente("sud"));
+        assertNull(this.stanzaBuia.getStanzaAdiacente(Direzione.SUD));
     }
 
     @Test
     void testImpostaStanzaAdiacente() {
-        this.stanzaBuia.impostaStanzaAdiacente("nord", this.stanzaAdiacente);
-        assertEquals(this.stanzaAdiacente, this.stanzaBuia.getStanzaAdiacente("nord"));
+        this.stanzaBuia.impostaStanzaAdiacente(Direzione.NORD, this.stanzaAdiacente);
+        assertEquals(this.stanzaAdiacente, this.stanzaBuia.getStanzaAdiacente(Direzione.NORD));
     }
 	
     @Test
     void testSostituzioneStanzaAdiacente() {
         Stanza nuovaStanza = new Stanza("n13");
-        this.stanzaBuia.impostaStanzaAdiacente("nord", this.stanzaAdiacente);
-        this.stanzaBuia.impostaStanzaAdiacente("nord", nuovaStanza);
-        assertEquals(nuovaStanza, this.stanzaBuia.getStanzaAdiacente("nord"));
+        this.stanzaBuia.impostaStanzaAdiacente(Direzione.NORD, this.stanzaAdiacente);
+        this.stanzaBuia.impostaStanzaAdiacente(Direzione.NORD, nuovaStanza);
+        assertEquals(nuovaStanza, this.stanzaBuia.getStanzaAdiacente(Direzione.NORD));
     }
 
 }

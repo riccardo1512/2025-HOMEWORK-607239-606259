@@ -6,8 +6,6 @@ import java.util.List;
 
 public class IOSimulator implements IO {
 
-
-
 	private List<String> righeDaLeggere;  // input simulato (da tastiera)
 	private List<String> messaggiStampati; // output simulato (a video)
 	

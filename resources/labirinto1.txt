@@ -1,0 +1,12 @@
+Stanze: N10, Biblioteca, AulaCampus, N1, N2, N3, N4, N5
+Attrezzi: Osso 5 N10, Chiave 1 N10
+StanzeBuie: StanzaBuia Osso, StanzaBuiaDue Lanterna
+StanzeBloccate: StanzaBloccata nord Chiave
+StanzeMagiche: StanzaMagica 4
+Inizio: N10
+Vincente: Biblioteca
+Uscite: N10 nord Biblioteca, Biblioteca sud N10, N10 ovest AulaCampus, AulaCampus est N10, AulaCampus ovest StanzaBuia, StanzaBuia est AulaCampus, StanzaBuia ovest StanzaBloccata, StanzaBloccata est StanzaBuia, StanzaBloccata ovest StanzaMagica, StanzaMagica est StanzaBloccata, N10 sud N1, N1 nord N10, N1 sud N2, N2 nord N1, N2 sud N3, N3 nord N2, N3 sud N4, N4 nord N3, N4 sud N5, N5 nord N4
+Cani: Cane CiaoSonoUnCane Regalo Osso, Chiwawa CiaoSonoUnChiwawa Tappeto Osso
+Maghi: Mago CiaoSonoUnMago Bacchetta, Merlino CiaoSonoMerlino Libro
+Streghe: Strega CiaoSonoUnaStrega
+PersonaggiNelleStanze: Cane N1, Chiwawa N2, Mago N3, Merlino N4, Strega N5

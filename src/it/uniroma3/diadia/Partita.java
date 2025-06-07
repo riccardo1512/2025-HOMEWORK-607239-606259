@@ -1,5 +1,6 @@
 package it.uniroma3.diadia;
 
+
 import it.uniroma3.diadia.ambienti.Labirinto;
 import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.giocatore.Giocatore;
@@ -23,12 +24,15 @@ public class Partita {
 	
 	private IO console;
 	
-	public Partita(){
+	/*
+	public Partita() throws FileNotFoundException, FormatoFileNonValidoException{
 		this.labirinto = new Labirinto();
 		this.stanzaCorrente = this.labirinto.getStanzaIniziale();
 		this.finita = false;
 		this.giocatore = new Giocatore();
 	}
+	*/
+	
 	
 	public Partita(Labirinto l) {
 		

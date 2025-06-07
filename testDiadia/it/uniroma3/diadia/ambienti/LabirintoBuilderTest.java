@@ -2,10 +2,11 @@ package it.uniroma3.diadia.ambienti;
 
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,13 +16,13 @@ import org.junit.jupiter.api.Test;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class LabirintoBuilderTest {
-	private LabirintoBuilder labirintoBuilder;
+	private Labirinto.LabirintoBuilder labirintoBuilder;
 	private String nomeStanzaIniziale = "Atrio";
 	private String nomeStanzaVincente = "Uscita";
 
 	@BeforeEach
 	void setUp() throws Exception {
-		labirintoBuilder = new LabirintoBuilder();
+		labirintoBuilder = new Labirinto.LabirintoBuilder();
 	}
 
 	@Test
@@ -67,8 +68,12 @@ public class LabirintoBuilderTest {
 				.addAdiacenza(nomeStanzaVincente, nomeStanzaIniziale, "sud")
 				.getLabirinto();
 		assertEquals(bilocale.getStanzaVincente(),bilocale.getStanzaIniziale().getStanzaAdiacente("nord"));
-		assertEquals(Collections.singletonList("nord"),bilocale.getStanzaIniziale().getDirezioni());
-		assertEquals(Collections.singletonList("sud"),bilocale.getStanzaVincente().getDirezioni());
+		Set<Direzione> setUno= new HashSet<Direzione>();
+		setUno.add(Direzione.NORD);
+		Set<Direzione> setDue= new HashSet<Direzione>();
+		setDue.add(Direzione.SUD);
+		assertEquals(setUno,bilocale.getStanzaIniziale().getDirezioni());
+		assertEquals(setDue,bilocale.getStanzaVincente().getDirezioni());
 	}
 	
 	@Test
@@ -116,13 +121,13 @@ public class LabirintoBuilderTest {
 				.getLabirinto();
 				Stanza test = new Stanza("stanza 5");
 		assertNull(maze.getStanzaIniziale().getStanzaAdiacente("nord-est"));
-		assertTrue(maze.getStanzaIniziale().getMapStanzeAdiacenti().size()<=4);
+		assertTrue(maze.getStanzaIniziale().getMapStanzeAdiacenti().keySet().size()<=4);
 		assertTrue(!maze.getStanzaIniziale().getMapStanzeAdiacenti().containsValue(test));
-		Map<String,Stanza> mappa = new HashMap<>();
-		mappa.put("nord", new Stanza("stanza 1"));
-		mappa.put("ovest", new Stanza("stanza 2"));
-		mappa.put("sud", new Stanza("stanza 3"));
-		mappa.put("est", new Stanza("stanza 4"));
+		Map<Direzione,Stanza> mappa = new HashMap<>();
+		mappa.put(Direzione.NORD, new Stanza("stanza 1"));
+		mappa.put(Direzione.OVEST, new Stanza("stanza 2"));
+		mappa.put(Direzione.SUD, new Stanza("stanza 3"));
+		mappa.put(Direzione.EST, new Stanza("stanza 4"));
 		assertEquals(mappa,maze.getStanzaIniziale().getMapStanzeAdiacenti());
 	}
 	
@@ -245,7 +250,7 @@ public class LabirintoBuilderTest {
 		String nomeAttrezzo1 = "attrezzo 1";
 		String nomeAttrezzo2 = "attrezzo 2";
 		String nomeAttrezzo2Inv = "2 ozzertta";
-		int sogliaMagica = 1;
+		int sogliaMagica = 2;
 		int peso1 = 1;
 		int peso2 = 2;
 		int peso2_x2 = peso2*2;
@@ -320,12 +325,12 @@ public class LabirintoBuilderTest {
 		assertEquals(nomeStanzaVincente, labirintoCompleto.getStanzaVincente().getNome());
 		Stanza corridoio = labirintoCompleto.getStanzaIniziale().getStanzaAdiacente("nord");
 		assertEquals("corridoio",corridoio.getNome());
-		assertTrue(corridoio.getDirezioni().containsAll(Arrays.asList("ovest","est","nord","sud")));
-		Map<String,Stanza> mapAdiacenti = new HashMap<>();
-		mapAdiacenti.put("nord",new Stanza("corridoio bloccato"));
-		mapAdiacenti.put("sud",new Stanza(nomeStanzaIniziale));
-		mapAdiacenti.put("est",new Stanza("stanza magica"));
-		mapAdiacenti.put("ovest",new Stanza("stanza buia"));
+		assertTrue(corridoio.getDirezioni().containsAll(Arrays.asList(Direzione.OVEST,Direzione.EST,Direzione.NORD,Direzione.SUD)));
+		Map<Direzione,Stanza> mapAdiacenti = new HashMap<>();
+		mapAdiacenti.put(Direzione.NORD,new Stanza("corridoio bloccato"));
+		mapAdiacenti.put(Direzione.SUD,new Stanza(nomeStanzaIniziale));
+		mapAdiacenti.put(Direzione.EST,new Stanza("stanza magica"));
+		mapAdiacenti.put(Direzione.OVEST,new Stanza("stanza buia"));
 		assertEquals(mapAdiacenti,corridoio.getMapStanzeAdiacenti());
 		Attrezzo a1 = new Attrezzo("chiave",1);
 		Attrezzo a2 = new Attrezzo("lanterna",1);

@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 
 class LabirintoTest {
 	
-	private Labirinto labirinto;
+	private Labirinto.LabirintoBuilder labirintoBuilder;
 	private Stanza nuovaStanza;
 
 	@BeforeEach
 	void setUp() throws Exception {
-		this.labirinto = new Labirinto();
+		this.labirintoBuilder = Labirinto.newBuilder();
 		this.nuovaStanza = new Stanza("nuova stanza");
 	}
 	
@@ -21,51 +21,43 @@ class LabirintoTest {
 
 	@Test
 	void testLabirintoNotNull() {
-		assertNotNull(this.labirinto);
+		assertNotNull(this.labirintoBuilder);
 	}
-	
-	/* TEST DEL METODO getStanzaIniziale() */
-
-    @Test
-    void testGetStanzaInizialeDefault() {
-        assertEquals("Atrio", this.labirinto.getStanzaIniziale().getNome());
-    }
-
-    /* TEST DEL METODO getStanzaVincente() */
-
-    @Test
-    void testGetStanzaVincenteDefault() {
-        assertEquals("Biblioteca", this.labirinto.getStanzaVincente().getNome());
-    }
    
-	/* TEST DEL METODO setStanzaIniziale() */
+	/* TEST DEL METODO get/setStanzaIniziale() */
 	
 	@Test
-	void testSetStanzaIniziale() {
-		assertNotEquals(this.labirinto.getStanzaVincente(), this.nuovaStanza);
-		this.labirinto.setStanzaIniziale(this.nuovaStanza);
-		assertEquals(this.labirinto.getStanzaIniziale(), this.nuovaStanza);
+	void testGetSetStanzaIniziale() {
+		assertNotEquals(this.labirintoBuilder.getStanzaVincente(), this.nuovaStanza);
+		this.labirintoBuilder.addStanzaIniziale(this.nuovaStanza);
+		assertEquals(this.labirintoBuilder.getStanzaIniziale(), this.nuovaStanza);
 	}
 	
 	@Test
 	void testSetStanzaInizialeNull() {
-		this.labirinto.setStanzaIniziale(null);
-		assertNull(this.labirinto.getStanzaIniziale());
+		this.labirintoBuilder.addStanzaIniziale((String) null);
+		assertNull(this.labirintoBuilder.getStanzaIniziale());
+		
+		this.labirintoBuilder.addStanzaIniziale((Stanza) null);
+		assertNull(this.labirintoBuilder.getStanzaIniziale());
 	}
 	
-	/* TEST DEL METODO setStanzaVincente() */
+	/* TEST DEL METODO get/setStanzaVincente() */
 	
 	@Test
-	void testSetStanzaVincente() {
-		assertNotEquals(this.labirinto.getStanzaVincente(), this.nuovaStanza);
-		this.labirinto.setStanzaVincente(this.nuovaStanza);
-		assertEquals(this.labirinto.getStanzaVincente(), this.nuovaStanza);
+	void testGetSetStanzaVincente() {
+		assertNotEquals(this.labirintoBuilder.getStanzaVincente(), this.nuovaStanza);
+		this.labirintoBuilder.addStanzaVincente(this.nuovaStanza);
+		assertEquals(this.labirintoBuilder.getStanzaVincente(), this.nuovaStanza);
 	}
 	
 	@Test
 	void testSetStanzaVincenteNull() {
-		this.labirinto.setStanzaVincente(null);
-		assertNull(this.labirinto.getStanzaVincente());
+		this.labirintoBuilder.addStanzaVincente((String) null);
+		assertNull(this.labirintoBuilder.getStanzaVincente());
+		
+		this.labirintoBuilder.addStanzaVincente((Stanza) null);
+		assertNull(this.labirintoBuilder.getStanzaVincente());
 	}
 	
 }

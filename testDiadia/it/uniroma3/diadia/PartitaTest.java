@@ -2,11 +2,19 @@ package it.uniroma3.diadia;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.FileNotFoundException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import it.uniroma3.diadia.ambienti.Direzione;
+import it.uniroma3.diadia.ambienti.FormatoFileNonValidoException;
 import it.uniroma3.diadia.ambienti.Labirinto;
 import it.uniroma3.diadia.ambienti.Stanza;
+import it.uniroma3.diadia.ambienti.StanzaBloccata;
+import it.uniroma3.diadia.ambienti.StanzaBuia;
+import it.uniroma3.diadia.ambienti.StanzaMagica;
+import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.giocatore.Giocatore;
 
 class PartitaTest {
@@ -16,7 +24,61 @@ class PartitaTest {
 	@BeforeEach
 	void setUp() throws Exception{
 		
-        this.partita = new Partita();
+		Labirinto labirinto = new Labirinto.LabirintoBuilder().getLabirinto();
+		this.creaStanze(labirinto);
+		
+        this.partita = new Partita(labirinto);
+	}
+	
+	/**
+	 * Crea tutte le stanze e le porte di collegamento
+	 */
+	private void creaStanze(Labirinto labirinto) {
+
+		/* crea gli attrezzi */
+		Attrezzo lanterna = new Attrezzo("lanterna",3);
+		Attrezzo osso = new Attrezzo("osso",1);
+
+		/* crea stanze del labirinto */
+		Stanza atrio = new Stanza("Atrio");
+		Stanza aulaN11 = new Stanza("Aula N11");
+		Stanza aulaN10 = new Stanza("Aula N10");
+		Stanza laboratorio = new Stanza("Laboratorio Campus");
+		Stanza biblioteca = new Stanza("Biblioteca");
+
+		Stanza stanzaMagica = new StanzaMagica("magica");
+		Stanza stanzaBuia = new StanzaBuia("buia", "lanterna");
+		Stanza stanzaBloccata = new StanzaBloccata("buia", Direzione.NORD, "osso");
+
+		/* collega le stanze */
+		atrio.impostaStanzaAdiacente(Direzione.NORD, biblioteca);
+		atrio.impostaStanzaAdiacente(Direzione.EST, aulaN11);
+		atrio.impostaStanzaAdiacente(Direzione.SUD, aulaN10);
+		atrio.impostaStanzaAdiacente(Direzione.OVEST, laboratorio);
+
+		aulaN11.impostaStanzaAdiacente(Direzione.EST, laboratorio);
+		aulaN11.impostaStanzaAdiacente(Direzione.OVEST, atrio);
+		/* aggiunta stanza magica, buia e bloccata*/
+		aulaN11.impostaStanzaAdiacente(Direzione.NORD, stanzaMagica);
+		stanzaMagica.impostaStanzaAdiacente(Direzione.NORD, stanzaBuia);
+		stanzaBuia.impostaStanzaAdiacente(Direzione.NORD, stanzaBloccata);
+		stanzaBloccata.impostaStanzaAdiacente(Direzione.NORD, atrio);
+
+		aulaN10.impostaStanzaAdiacente(Direzione.NORD, atrio);
+		aulaN10.impostaStanzaAdiacente(Direzione.EST, aulaN11);
+		aulaN10.impostaStanzaAdiacente(Direzione.OVEST, laboratorio);
+
+		laboratorio.impostaStanzaAdiacente(Direzione.EST, atrio);
+		laboratorio.impostaStanzaAdiacente(Direzione.OVEST, aulaN11);
+		biblioteca.impostaStanzaAdiacente(Direzione.SUD, atrio);
+
+		/* pone gli attrezzi nelle stanze */
+		aulaN10.addAttrezzo(lanterna);
+		atrio.addAttrezzo(osso);
+
+		// il gioco comincia nell'atrio
+		labirinto.setStanzaIniziale(atrio);  
+		labirinto.setStanzaVincente(biblioteca);
 	}
 	
 	/* TEST DEL METODO vinta() */
@@ -100,8 +162,8 @@ class PartitaTest {
     
     /* TEST DEL METODO setLabirinto() */
     @Test
-	void testSetLabirintoDiverso() {
-	    Labirinto nuovoLabirinto = new Labirinto();
+	void testSetLabirintoDiverso() throws FileNotFoundException, FormatoFileNonValidoException {
+	    Labirinto nuovoLabirinto = new Labirinto.LabirintoBuilder().getLabirinto();
 	    this.partita.setLabirinto(nuovoLabirinto);
 	    assertEquals(nuovoLabirinto, this.partita.getLabirinto());
 	}

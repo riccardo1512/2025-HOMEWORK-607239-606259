@@ -3,6 +3,8 @@ import java.util.Scanner;
 
 public class IOConsole implements IO {
 	
+	Scanner scannerDiLinee;
+	
 	@Override
 	public void mostraMessaggio(String msg) {
 		System.out.println(msg);
@@ -10,9 +12,14 @@ public class IOConsole implements IO {
 	
 	@Override
 	public String leggiRiga() {
-		Scanner scannerDiLinee = new Scanner(System.in);
+		this.scannerDiLinee = new Scanner(System.in);
 		String riga = scannerDiLinee.nextLine();
-		//scannerDiLinee.close();
+		
 		return riga;
+	}
+	
+	public void chiudiScanner() {
+		
+		this.scannerDiLinee.close();
 	}
 }

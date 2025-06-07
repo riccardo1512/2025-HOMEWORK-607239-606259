@@ -21,6 +21,12 @@ public class FabbricaDiComandiRiflessiva implements FabbricaDiComandi {
 			nomeComando = scannerDiParole.next(); // prima parola: nome del comando
 		if (scannerDiParole.hasNext()) 
 			parametro = scannerDiParole.next(); // seconda parola: eventuale parametro
+		
+		scannerDiParole.close();
+		
+
+		if(nomeComando == null)
+			return new ComandoNonValido();
 
 
 		StringBuilder nomeClasse = new StringBuilder("it.uniroma3.diadia.comandi.Comando");
@@ -31,8 +37,7 @@ public class FabbricaDiComandiRiflessiva implements FabbricaDiComandi {
 			comando = (Comando) Class.forName(nomeClasse.toString()).newInstance();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return new ComandoNonValido();
 		}
 		
 		if(comando == null)
@@ -40,6 +45,8 @@ public class FabbricaDiComandiRiflessiva implements FabbricaDiComandi {
 		
 
 			comando.setParametro(parametro);
+			
+		
 		
 		
 		return comando;
